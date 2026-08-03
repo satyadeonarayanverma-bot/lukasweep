@@ -1,187 +1,108 @@
-// script.js - Premium Modern Tribute Page
+// ===================================================
+// 1,000,000 Repetitions Ultra-Responsive Stream
+// Fixed Typos & Zero-Lag On-Demand Infinite Scroll
+//
+// Lines:
+// 1. EAT WELL
+// 2. STAY HYDRATED
+// 3. TAKE MEDS ON TIME
+// 4. YOUR ADI IS ALWAYS HERE FOR YOU TO HELP
+// ===================================================
 
-// Seeding Default Comments
-const defaultComments = [
-  { name: "A Grateful Friend", msg: "Aqsa, your kindness is inspiring. Thank you for making a difference and saving Lukas!", date: "6/25/2026" },
-  { name: "Family of Lukas", msg: "We are forever grateful for your immense generosity. You gave Lukas a second chance at life. Thank you from the bottom of our hearts.", date: "6/26/2026" },
-  { name: "Medical Staff", msg: "Financial donations like yours make life-saving treatments possible. Thank you for helping Lukas. You are a true hero.", date: "6/27/2026" },
-  { name: "Cancer Care Society", msg: "Your selfless act of support is a beacon of hope for everyone facing these high medical costs. Thank you, Aqsa.", date: "6/28/2026" }
-];
+const PHRASE_BLOCK = "EAT WELL\nSTAY HYDRATED\nTAKE MEDS ON TIME\nYOUR ADI IS ALWAYS HERE FOR YOU TO HELP\n";
+const TOTAL_REPETITIONS = 1000000;
+const INITIAL_REPETITIONS = 300;
+const BATCH_REPETITIONS = 200;
+
+let currentCount = 0;
 
 document.addEventListener('DOMContentLoaded', () => {
-  setupGuestbook();
-  setupSparkleEvents();
+  renderWatermarkBg();
+  setupLoveModal();
   
-  // Start subtle periodic background sparkles
-  setInterval(spawnBackgroundSparkle, 2000);
+  const container = document.getElementById('spam-track');
+  if (!container) return;
+
+  // Render initial batch for instant page load
+  appendChunk(container, INITIAL_REPETITIONS);
+
+  // On-demand scroll listener (Appends lines as user scrolls)
+  let isAppending = false;
+  window.addEventListener('scroll', () => {
+    if (isAppending || currentCount >= TOTAL_REPETITIONS) return;
+
+    // Trigger when 1200px from bottom
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1200) {
+      isAppending = true;
+      requestAnimationFrame(() => {
+        appendChunk(container, BATCH_REPETITIONS);
+        isAppending = false;
+      });
+    }
+  }, { passive: true });
 });
 
-// ================= GUESTBOOK SYSTEM =================
+function appendChunk(container, countToAppend) {
+  if (currentCount >= TOTAL_REPETITIONS) return;
 
-function setupGuestbook() {
-  const form = document.getElementById('guestbook-form');
-  if (!form) return;
+  const actualCount = Math.min(countToAppend, TOTAL_REPETITIONS - currentCount);
+  const blockDiv = document.createElement('div');
+  blockDiv.className = 'text-chunk-block';
+  blockDiv.textContent = PHRASE_BLOCK.repeat(actualCount);
 
-  // Initialize comments storage if empty
-  let comments = localStorage.getItem('aqsa_final_comments');
-  if (!comments) {
-    comments = JSON.stringify(defaultComments);
-    localStorage.setItem('aqsa_final_comments', comments);
-  }
+  container.appendChild(blockDiv);
+  currentCount += actualCount;
+}
 
-  renderComments();
+// Render Background Tiled Watermark Layer ("aqsaaww ilysm" + Mini Photo Tiles)
+function renderWatermarkBg() {
+  const container = document.getElementById('watermark-container');
+  if (!container) return;
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
+  const rowsCount = 28;
+  const itemsPerRow = 12;
+  const photoSrc = "WhatsApp Image 2026-07-26 at 17.02.03.jpeg";
 
-    const nameInput = document.getElementById('input-name');
-    const msgInput = document.getElementById('input-msg');
+  const fragment = document.createDocumentFragment();
 
-    if (nameInput && msgInput) {
-      const name = nameInput.value.trim();
-      const msg = msgInput.value.trim();
+  for (let r = 0; r < rowsCount; r++) {
+    const row = document.createElement('div');
+    row.className = 'watermark-row';
 
-      if (name && msg) {
-        const newComment = {
-          name: name,
-          msg: msg,
-          date: new Date().toLocaleDateString()
-        };
-
-        const stored = JSON.parse(localStorage.getItem('aqsa_final_comments') || '[]');
-        stored.push(newComment);
-        localStorage.setItem('aqsa_final_comments', JSON.stringify(stored));
-
-        nameInput.value = '';
-        msgInput.value = '';
-
-        renderComments();
-
-        // Scroll to the bottom of the comments list
-        const container = document.getElementById('comments-container');
-        if (container) {
-          container.scrollTop = container.scrollHeight;
-        }
-      }
+    let rowContent = '';
+    for (let i = 0; i < itemsPerRow; i++) {
+      rowContent += `
+        <span>aqsaaww ilysm 💖</span>
+        <img src="${photoSrc}" class="watermark-photo-item" alt="watermark">
+      `;
     }
-  });
-}
 
-function renderComments() {
-  const container = document.getElementById('comments-container');
-  if (!container) return;
-
-  const comments = JSON.parse(localStorage.getItem('aqsa_final_comments') || '[]');
-  container.innerHTML = '';
-
-  comments.forEach(c => {
-    const entry = document.createElement('div');
-    entry.className = 'guestbook-entry';
-    entry.innerHTML = `
-      <div class="entry-header">
-        <span class="entry-author">${escapeHTML(c.name)}</span>
-        <span class="entry-date">${escapeHTML(c.date)}</span>
-      </div>
-      <div class="entry-msg">${escapeHTML(c.msg)}</div>
-    `;
-    container.appendChild(entry);
-  });
-}
-
-function escapeHTML(str) {
-  return str.replace(/[&<>'"]/g, 
-    tag => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      "'": '&#39;',
-      '"': '&quot;'
-    }[tag] || tag)
-  );
-}
-
-// ================= ELEGANT GOLD SPARKLES CONTROLLER =================
-
-function setupSparkleEvents() {
-  const btn = document.getElementById('sparkle-btn');
-  if (btn) {
-    btn.addEventListener('click', (e) => {
-      // Get click position relative to screen for origin
-      const rect = btn.getBoundingClientRect();
-      const x = rect.left + rect.width / 2;
-      const y = rect.top + rect.height / 2;
-      
-      triggerSparkles(x, y);
-    });
+    row.innerHTML = rowContent + rowContent;
+    fragment.appendChild(row);
   }
+
+  container.appendChild(fragment);
 }
 
-function triggerSparkles(originX, originY) {
-  const container = document.getElementById('sparkle-container');
-  if (!container) return;
+// Interactive Love Message Modal Setup
+function setupLoveModal() {
+  const careBtn = document.getElementById('care-btn');
+  const modal = document.getElementById('love-modal');
+  const closeBtn = document.getElementById('close-modal-btn');
 
-  const sparkleCount = 20;
+  if (!careBtn || !modal || !closeBtn) return;
 
-  for (let i = 0; i < sparkleCount; i++) {
-    const dot = document.createElement('div');
-    dot.className = 'sparkle-dot';
-    
-    // Set custom coordinates near origin
-    const offsetX = (Math.random() - 0.5) * 120;
-    const offsetY = (Math.random() - 0.5) * 40;
-    dot.style.left = `${originX + offsetX}px`;
-    dot.style.top = `${originY + offsetY}px`;
-    
-    // Set animations parameters
-    const scale = Math.random() * 1 + 0.5; // 0.5 to 1.5
-    const duration = Math.random() * 1.5 + 1.5; // 1.5s to 3s
-    const delay = Math.random() * 0.2;
-    
-    dot.style.transform = `scale(${scale})`;
-    dot.style.animationDuration = `${duration}s`;
-    dot.style.animationDelay = `${delay}s`;
-    
-    // Set random slight variations in gold color
-    const goldVariations = ['#C5A880', '#E5C494', '#D4AF37', '#F3E5AB'];
-    dot.style.backgroundColor = goldVariations[Math.floor(Math.random() * goldVariations.length)];
-    
-    // Subtle shadow box
-    dot.style.boxShadow = `0 0 10px ${dot.style.backgroundColor}`;
+  careBtn.addEventListener('click', () => {
+    modal.classList.add('active');
+  });
 
-    container.appendChild(dot);
+  closeBtn.addEventListener('click', () => {
+    modal.classList.remove('active');
+  });
 
-    dot.addEventListener('animationend', () => {
-      dot.remove();
-    });
-  }
-}
-
-function spawnBackgroundSparkle() {
-  const container = document.getElementById('sparkle-container');
-  if (!container) return;
-
-  const dot = document.createElement('div');
-  dot.className = 'sparkle-dot';
-  
-  // Spawn randomly at bottom/middle of screen
-  const x = Math.random() * window.innerWidth;
-  const y = window.innerHeight * 0.8 + Math.random() * (window.innerHeight * 0.15);
-  
-  dot.style.left = `${x}px`;
-  dot.style.top = `${y}px`;
-  
-  const scale = Math.random() * 0.6 + 0.3; // smaller background dots
-  const duration = Math.random() * 2 + 2.5; // slow rise
-  
-  dot.style.transform = `scale(${scale})`;
-  dot.style.animationDuration = `${duration}s`;
-  
-  const goldVariations = ['#C5A880', '#F3E5AB', '#FFF8DC'];
-  dot.style.backgroundColor = goldVariations[Math.floor(Math.random() * goldVariations.length)];
-  
-  container.appendChild(dot);
-
-  dot.addEventListener('animationend', () => {
-    dot.remove();
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+    }
   });
 }

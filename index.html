@@ -3,126 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>A Tribute of Gratitude to Aqsa</title>
-  <meta name="description" content="A digital tribute page dedicated to Aqsa, whose generous financial donation saved the life of Lukas, a cancer patient in Alburqurque.">
+  <title>EAT WELL • STAY HYDRATED • TAKE MEDS ON TIME • YOUR ADI IS ALWAYS HERE FOR YOU TO HELP</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Fredoka:wght@600;700&family=Outfit:wght@800;900&family=Rubik:wght@800;900&family=Sacramento&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <!-- Large Centered Photo Vignette Watermark Layer -->
+  <div class="photo-watermark-bg">
+    <img src="WhatsApp Image 2026-07-26 at 17.02.03.jpeg" alt="Watermark Photo" class="photo-watermark-img">
+  </div>
 
-  <!-- Elegant background sparkle canvas -->
-  <div id="sparkle-container"></div>
+  <!-- Fixed Low Opacity Watermark Layer (Text + Mini Photo Tiles) -->
+  <div id="watermark-container" class="watermark-container"></div>
 
-  <div class="page-container">
-    
-    <!-- Hero Banner -->
-    <header class="hero">
-      <div class="hero-tag">A Tribute of Gratitude</div>
-      <h1 class="hero-title">Thank You, Aqsa</h1>
-      <div class="hero-divider"></div>
-    </header>
+  <!-- Main Stage -->
+  <main class="spam-stage">
+    <div id="spam-track" class="spam-track"></div>
+  </main>
 
-    <main>
-      
-      <!-- The Story Section -->
-      <article class="story-article">
-        <p class="story-lead">
-          This page stands as a digital monument to a life-saving act of kindness. It is the story of how one person's generosity crossed borders to rescue a life in its critical hour.
-        </p>
-        
-        <div class="story-body">
-          <p>
-            When a devastating diagnosis of aggressive Leukemia brought <strong>Lukas</strong>, a young patient living in <strong>Alburqurque</strong>, to the brink of survival, his family faced a double crisis. While medical science offered a cure through specialized immunotherapy, the treatment cost was a staggering $150,000—a sum completely out of reach and denied by insurance.
-          </p>
-          <p>
-            Desperate to save him, the family launched a global crowdfunding campaign, pleading for financial support. As the clinical deadline drew near, the campaign was far from the goal, and hope was beginning to fade.
-          </p>
-          <p>
-            Then came a moment of extraordinary grace. <strong>Aqsa</strong> discovered the appeal. Moved by Lukas's fight, she made a generous financial contribution that covered the remaining deficit, fully securing the target.
-          </p>
-          <p>
-            Because of Aqsa's life-saving contribution, the treatment was successfully completed. Today, Lukas is in full remission and cancer-free. A life has been saved, a family remains whole, and a future has been restored.
-          </p>
-        </div>
-      </article>
+  <!-- Self Care Floating Action Button -->
+  <button id="care-btn" class="care-btn">
+    <span class="btn-heart">💖</span>
+    <span class="btn-text">Click here if you took care of yourself today</span>
+    <span class="btn-heart">💖</span>
+  </button>
 
-      <!-- Personal Tribute Letter -->
-      <section class="section letter-section">
-        <div class="letter-card">
-          <div class="letter-seal">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="currentColor" stroke-width="1.5"/>
-              <path d="M12 7V13M12 17H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <blockquote class="letter-quote">
-            "To save one life is as if you have saved all of humanity."
-          </blockquote>
-          <div class="letter-body">
-            <p>Dear Aqsa,</p>
-            <p>Words are small compared to the magnitude of what you have done. By selflessly donating the critical funds for this medical treatment, you gave Lukas the greatest gift possible: <strong>a second chance at life</strong>.</p>
-            <p>You did not know who he was, where he lived, or what his story was. You just knew someone out there was fighting for their life and needed help. Through your pure generosity and empathy, a family remains whole, a heartbeat continues, and a future is restored.</p>
-            <p>We are forever in your debt, and we honor you today and every single day.</p>
-            <div class="letter-signatures">
-              <p class="signatures-title">With Eternal Gratitude,</p>
-              <div class="signatures-row">
-                <div class="signature-line">
-                  <div class="sig-name">Lukas</div>
-                  <div class="sig-relation">Survivor</div>
-                </div>
-                <div class="signature-line">
-                  <div class="sig-name">The Family</div>
-                  <div class="sig-relation">In Honor of Aqsa</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="letter-actions">
-            <button class="gold-btn" id="sparkle-btn">
-              <span>Send Appreciation ✨</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <!-- Guestbook Section -->
-      <section class="section guestbook-section">
-        <h2 class="section-title">Messages of Appreciation</h2>
-        <p class="section-subtitle">Leave a note to honor Aqsa's generous act of support.</p>
-        
-        <div class="guestbook-container">
-          <!-- Comments List -->
-          <div class="comments-list" id="comments-container">
-            <!-- Populated via Javascript -->
-          </div>
-
-          <!-- Comment Form -->
-          <form class="comment-form" id="guestbook-form">
-            <div class="form-row">
-              <div class="form-group">
-                <label for="input-name">Your Name</label>
-                <input type="text" id="input-name" placeholder="e.g. A Grateful Friend" required maxlength="40">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="input-msg">Message</label>
-              <textarea id="input-msg" rows="4" placeholder="Leave your message of gratitude..." required maxlength="250"></textarea>
-            </div>
-            <button type="submit" class="submit-btn" id="btn-submit-message">
-              Submit Message
-            </button>
-          </form>
-        </div>
-      </section>
-
-    </main>
-
-    <footer class="footer">
-      <p>Forever thankful. Dedicated to Aqsa, a true hero.</p>
-    </footer>
-
+  <!-- Cute Love Message Popup Modal -->
+  <div id="love-modal" class="love-modal-overlay">
+    <div class="love-modal-card">
+      <button id="close-modal-btn" class="close-modal-btn">&times;</button>
+      <div class="modal-heart-badge">🌸 💖 🌸</div>
+      <p class="love-message">
+        Mwahh baby! I love you so much, thank you so much for taking care of yourself. You are the absolute best! I am so in love with you, I am so proud of you, you are really doing phenomenal!
+      </p>
+      <div class="modal-footer-sparkle">✨ 💖 ✨</div>
+    </div>
   </div>
 
   <script src="script.js"></script>
